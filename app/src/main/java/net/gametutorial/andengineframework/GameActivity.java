@@ -86,12 +86,12 @@ public class GameActivity extends BaseGameActivity  implements ButtonSprite.OnCl
     private ITexture mPlayerTexture,mTopEendTexture,mTopEendTexture2,mTopEendTexture3;
     private TiledTextureRegion mPlayerTextureRegion;
     private TiledTextureRegion mPlayerTextureRegion1,mTopEendTextureRegion3;
-    private ITexture mParallaxLayerBackTexture;
+    private ITexture mParallaxLayerBackTexture,mParallaxLayercloud;
     private ITexture mParallaxLayerMidTexture;
     private ITexture mParallaxLayerFrontTexture;
      VertexBufferObjectManager vertexBufferObjectManager;
     private ITextureRegion mParallaxLayerBackTextureRegion;
-    private ITextureRegion mParallaxLayerMidTextureRegion;
+    private ITextureRegion mParallaxLayerMidTextureRegion,mParallaxLayercloudTextureRegion;
     private ITextureRegion mParallaxLayerFrontTextureRegion;
     private Font mFont;
     int count=0;
@@ -111,7 +111,7 @@ public class GameActivity extends BaseGameActivity  implements ButtonSprite.OnCl
         final float centerY = CAMERA_HEIGHT / 18;
         player = new AnimatedSprite(centerX, centerY , this.mPlayerTextureRegion, vertexBufferObjectManager);
         //player.setOffsetCenterY(0);
-        player.setScale(4);
+      //  player.setScale(2);
      //   player.animate(new long[]{200, 200, 200}, 3, 5, true);
 //
 //        mTopEndButton = new Sprite(70, 420, this.mTopEendTextureRegion, this.getVertexBufferObjectManager());
@@ -163,11 +163,11 @@ public class GameActivity extends BaseGameActivity  implements ButtonSprite.OnCl
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 
-                if (mEngine.isRunning()) {
+               // if (mEngine.isRunning()) {
                   //  pauseGame();
-                } else {
+                //} else {
                    // unPauseGame();
-                }
+                //}
 //                mTopEndButton.setVisible(false);
 //                mTopEndButton2.setVisible(true);
 
@@ -181,11 +181,15 @@ public class GameActivity extends BaseGameActivity  implements ButtonSprite.OnCl
         final AutoParallaxBackground autoParallaxBackground = new AutoParallaxBackground(0, 0, 0, 10);
         final Sprite parallaxLayerBackSprite = new Sprite(0, 0, this.mParallaxLayerBackTextureRegion, vertexBufferObjectManager);
         parallaxLayerBackSprite.setOffsetCenter(0, 0);
-        autoParallaxBackground.attachParallaxEntity(new ParallaxBackground.ParallaxEntity(-10.0f, parallaxLayerBackSprite));
+        autoParallaxBackground.attachParallaxEntity(new ParallaxBackground.ParallaxEntity(-3.0f, parallaxLayerBackSprite));
 
-        final Sprite parallaxLayerMidSprite = new Sprite(0, CAMERA_HEIGHT - this.mParallaxLayerMidTextureRegion.getHeight() - 80, this.mParallaxLayerMidTextureRegion, vertexBufferObjectManager);
+        final Sprite parallaxLayerMidSprite = new Sprite(0, CAMERA_HEIGHT - this.mParallaxLayerMidTextureRegion.getHeight() - 70, this.mParallaxLayerMidTextureRegion, vertexBufferObjectManager);
         parallaxLayerMidSprite.setOffsetCenter(0, 0);
-        autoParallaxBackground.attachParallaxEntity(new ParallaxBackground.ParallaxEntity(-5.0f, parallaxLayerMidSprite));
+        autoParallaxBackground.attachParallaxEntity(new ParallaxBackground.ParallaxEntity(-2.0f, parallaxLayerMidSprite));
+
+        final Sprite parallaxLayerBackCloudSprite = new Sprite(0, 0, this.mParallaxLayercloudTextureRegion, vertexBufferObjectManager);
+        parallaxLayerBackCloudSprite.setOffsetCenter(0, 0);
+        autoParallaxBackground.attachParallaxEntity(new ParallaxBackground.ParallaxEntity(-10.0f, parallaxLayerBackCloudSprite));
 
         final PathModifier.Path path = new PathModifier.Path(2).to(CAMERA_WIDTH - 2, 40).to(-20, 40);
         final PathModifier.Path secondBoxPath = new PathModifier.Path(2).to(CAMERA_WIDTH-2, 120).to(-20, 120);
@@ -296,6 +300,7 @@ public class GameActivity extends BaseGameActivity  implements ButtonSprite.OnCl
                     GameEndScreen = new Scene();
                     final Text centerText = new Text(CAMERA_WIDTH / 2, 400, GameActivity.this.mFont, "GAME OVER !!!\n" + "Your Score is:" + count, new TextOptions(HorizontalAlign.CENTER), vertexBufferObjectManager);
                     //thirdScreen.reset();
+                   count=0;
                     homeButton = new Sprite(380, 250, GameActivity.this.mHomeTextrueRegin, GameActivity.this.getVertexBufferObjectManager()) {
                         @Override
                         public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -338,7 +343,7 @@ public class GameActivity extends BaseGameActivity  implements ButtonSprite.OnCl
     private void playerMove(){
         final Entity playerEntity = player;
         final SequenceEntityModifier modifier1 = new SequenceEntityModifier(
-                new MoveByModifier((float) 1.5, 0, 30),
+                new MoveByModifier((float) 1.0, 0, 30),
                 new MoveByModifier((float) 1.5, 0, -30)
         );
 
@@ -379,17 +384,22 @@ public class GameActivity extends BaseGameActivity  implements ButtonSprite.OnCl
         splashTextureAtlas = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/splashImage.png");
         splashTextureRegion =  TextureRegionFactory.extractFromTexture(this.splashTextureAtlas);
 
-        this.mPlayerTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/player.png", TextureOptions.BILINEAR);
-        this.mPlayerTextureRegion = TextureRegionFactory.extractTiledFromTexture(this.mPlayerTexture, 3, 4);
+        this.mPlayerTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/playerr.png", TextureOptions.BILINEAR);
+        this.mPlayerTextureRegion = TextureRegionFactory.extractTiledFromTexture(this.mPlayerTexture, 1, 1);
         this.mPlayerTexture.load();
 
-        this.mParallaxLayerBackTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/parallax_background_layer_back.png");
+        this.mParallaxLayerBackTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/parallax_background_layer_back11.png");
         this.mParallaxLayerBackTextureRegion = TextureRegionFactory.extractFromTexture(this.mParallaxLayerBackTexture);
         this.mParallaxLayerBackTexture.load();
 
-        this.mParallaxLayerMidTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/parallax_background_layer_mid1.png");
+        this.mParallaxLayerMidTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/clouds.png");
         this.mParallaxLayerMidTextureRegion = TextureRegionFactory.extractFromTexture(this.mParallaxLayerMidTexture);
         this.mParallaxLayerMidTexture.load();
+
+
+        this.mParallaxLayercloud = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/road.png");
+       this.mParallaxLayercloudTextureRegion = TextureRegionFactory.extractFromTexture(this.mParallaxLayercloud);
+        this.mParallaxLayercloud.load();
 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         this.mBuildableBitmapTextureAtlas = new BuildableBitmapTextureAtlas(this.getTextureManager(), 312, 312);
@@ -415,23 +425,23 @@ public class GameActivity extends BaseGameActivity  implements ButtonSprite.OnCl
         this.mNotesTextureRegion = TextureRegionFactory.extractFromTexture(this.mNotesTexture);
         this.mNotesTexture.load();
 
-        this.mfirstBoxTexure = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/box.png", TextureOptions.BILINEAR);
+        this.mfirstBoxTexure = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/boxr64.png", TextureOptions.BILINEAR);
         this.mBoxFirstRegion = TextureRegionFactory.extractFromTexture(this.mfirstBoxTexure);
         this.mfirstBoxTexure.load();
 
-        this.mBoxSecond = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/box2.png", TextureOptions.BILINEAR);
+        this.mBoxSecond = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/boxr64.png", TextureOptions.BILINEAR);
         this.mBoxSecondRegion = TextureRegionFactory.extractFromTexture(this.mBoxSecond);
         this.mBoxSecond.load();
 
-        this.mBoxThirdTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/box3.png", TextureOptions.BILINEAR);
+        this.mBoxThirdTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/boxr64.png", TextureOptions.BILINEAR);
         this.mBoxthirdRegion = TextureRegionFactory.extractFromTexture(this.mBoxThirdTexture);
         this.mBoxThirdTexture.load();
 
-        this.mBoxForthTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/box4.png", TextureOptions.BILINEAR);
+        this.mBoxForthTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/boxr64.png", TextureOptions.BILINEAR);
         this.mBoxForthReagion = TextureRegionFactory.extractFromTexture(this.mBoxForthTexture);
         this.mBoxForthTexture.load();
 
-        this.mBoxFifthTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/box5.png", TextureOptions.BILINEAR);
+        this.mBoxFifthTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/boxr64.png", TextureOptions.BILINEAR);
         this.mBoxFifthRegion = TextureRegionFactory.extractFromTexture(this.mBoxFifthTexture);
         this.mBoxFifthTexture.load();
 
